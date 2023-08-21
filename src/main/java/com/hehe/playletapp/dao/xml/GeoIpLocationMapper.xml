@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hehe.playletapp.dao.GeoIpLocationMapper">
+
+    <select id="getIpLocation" resultType="string">
+        SELECT
+            loc.country_iso_code
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    geoip2_network
+                WHERE
+                    network_start_integer &lt;= #{ipDecimal}
+            and network_last_integer &gt;= #{ipDecimal}
+                ORDER BY
+                    network_start_integer DESC
+                LIMIT 1
+            ) net
+        left join geoip2_location loc on
+          net.geoname_id = loc.geoname_id
+    </select>
+</mapper>

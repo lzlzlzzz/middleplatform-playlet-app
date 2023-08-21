@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: @profileActive@
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+logging:
+  level:
+    com.hehe.moneytorun.dao: info
+    org.springframework.web: info
+    com.alibaba.nacos.client.naming: error
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    aggressive-lazy-loading: true
+    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: assign_id
+      table-prefix: tb_
+      table-underline: true
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/com/hehe/playletapp/dao/xml/*Mapper.xml
+
+jwt:
+  issuer: middleTech
+  baseKey: hehemiddle
+
+rsa-aes:
+  app-ae-deckey: MLJSCMVOJJYYUUEO
+  app-ae-enckey: SNLSCVWOTJJYOIFS
+
+policy:
+  access_key_id: LTAI5tA5ge5qCKwXCjdPikAn
+  access_key_secret: myZwjPSuvIZSoeyu3ijSEHD0I0Fmpc
+  role_arn: acs:ram::135247:role/aliyun-logstore-full
+  token_expire_time: 3600
+  policy_file: policy/write_policy.txt
+
+server:
+  port: 9014

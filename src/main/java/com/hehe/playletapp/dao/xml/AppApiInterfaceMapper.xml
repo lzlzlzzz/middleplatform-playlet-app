@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hehe.playletapp.dao.AppApiInterfaceMapper">
+
+    <select id="getInfo" resultType="com.hehe.playletapp.entity.AppApiInterface">
+        SELECT
+        pimp.package_name AS packageName,
+        aim.mapping_key AS mappingKey,
+        pimp.product_mapping_alias AS productMappingAlias
+        FROM
+        (
+        SELECT
+        taim.id,
+        taim.mapping_key,
+        tpaim.package_name
+        FROM
+        tb_api_interface_mapping taim
+        LEFT JOIN tb_product_api_interface_mapping tpaim on taim.api_interface_id = tpaim.api_interface_id
+        <where>
+                taim.mapping_type =  #{type}
+            <if test="path !=null">
+                and tpaim.request_path = #{path}
+            </if>
+        </where>
+        ) AS aim
+        LEFT JOIN tb_product_interface_mapping_params pimp ON aim.id = pimp.mapping_id and aim.package_name = pimp.package_name
+        where pimp.product_mapping_alias is not null
+    </select>
+    <select id="getParam" resultType="com.hehe.playletapp.entity.AppApiInterface">
+        SELECT
+        pimp.package_name as  packageName,
+        aim.mapping_key as mappingKey,
+        pimp.product_mapping_alias as productMappingAlias
+        FROM
+        (
+        SELECT
+        id,
+        mapping_key
+        FROM
+        tb_api_interface_mapping
+        WHERE
+        api_interface_id IN (
+        SELECT
+        api_interface_id
+        FROM
+        tb_product_api_interface_mapping
+        <where>
+            <if test="path !=null">
+                and request_path = #{path}
+            </if>
+        </where>
+        )
+        AND mapping_type = 'request'
+        ) AS aim
+        LEFT JOIN tb_product_interface_mapping_params pimp ON aim.id = pimp.mapping_id
+    </select>
+</mapper>

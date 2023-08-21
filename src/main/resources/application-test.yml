@@ -1,0 +1,66 @@
+spring:
+  redis:
+    host: r-j6czzi3tw26bxxenhz.redis.rds.aliyuncs.com
+    port: 6379
+    timeout: 20000
+    pool:
+      max-active: 8
+      min-idle: 0
+      max-idle: 8
+      max-wait: -1
+    password: L2hVQoPLxXBOq%#
+  datasource:
+    dynamic:
+      druid:
+        # 最大连接池数量30
+        max-active: 10
+        # 最小连接池数量5
+        min-idle: 5
+        # 获取连接时最大等待时间，单位毫秒
+        max-wait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        time-between-eviction-runs-millis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        stat:
+          mergeSql: false
+          slowSqlMillis: 1000
+          logSlowSql: true
+        wall:
+          alter-table-allow: false
+          truncate-allow: false
+          drop-table-allow: false
+          #是否允许非以上基本语句的其他语句，缺省关闭，通过这个选项就能够屏蔽DDL
+          none-base-statement-allow: false
+          #检查UPDATE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+          update-where-none-check: true
+          #SELECT ... INTO OUTFILE 是否允许，这个是mysql注入攻击的常见手段，缺省是禁止的
+          select-into-outfile-allow: false
+          #是否允许调用Connection.getMetadata方法，这个方法调用会暴露数据库的表信息
+          metadata-allow: true
+          #允许多条sql一起执行
+          multiStatementAllow: true
+        filters: stat,wall
+      primary: playletdb
+      strict: false
+      datasource:
+        playletdb:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://rm-j6cgwt7v9ei4x78b9.mysql.rds.aliyuncs.com:3306/middleplatform_playlet_db?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: offerwall
+          password: dKL!clNTIoSXLgX
+          type: com.alibaba.druid.pool.DruidDataSource
+
+logging:
+  level:
+    com.hehe.moneytorun.dao: debug
+    org.springframework.web: info
+    com.alibaba.nacos.client.naming: error
+
+common:
+  domain: https://test-offerwall.oss-cn-hongkong.aliyuncs.com/

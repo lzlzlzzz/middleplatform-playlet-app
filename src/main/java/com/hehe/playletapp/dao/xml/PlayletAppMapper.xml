@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hehe.playletapp.dao.PlayletAppMapper">
+    <select id="getAppByPackageName" resultType="com.hehe.playletapp.entity.PlayletApp">
+        select * from tb_playlet_app where deleted = 0 and package_name = #{packageName}
+    </select>
+</mapper>
